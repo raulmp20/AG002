@@ -13,4 +13,6 @@ print(db.procurarDados())
 ia = Inteligencia(db.procurarDados())
 ia.resultados_treinos()
 
-db.inserirDados()
+dados = db.inserirDados()
+
+ia.evaluate_client(dados)

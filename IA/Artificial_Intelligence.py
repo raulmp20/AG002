@@ -11,8 +11,8 @@ class Inteligencia (object):
     def __init__(self, dados):
         self.dados = dados
         # Modificando classe para ficar 1 e 0
-        transformacao = {1: 0, 2: 1}
-        self.dados['class'] = self.dados[['class']].replace(transformacao)
+        #transformacao = {1: 0, 2: 1}
+        #self.dados['class'] = self.dados[['class']].replace(transformacao)
 
         dadosX = self.dados.iloc[:, 1:-1]
         dadosY = self.dados.iloc[:, -1]
@@ -61,3 +61,11 @@ class Inteligencia (object):
 
     def resultados_treinos(self):
         self.metricas_avaliacao(self.matriz_confusao, self.acuracia)
+
+    def evaluate_client(self, x):
+        client_result = self.tree.predict(x)
+
+        if(client_result==1):
+            print("Não há indicação da doença")
+        else:
+            print("Há indicação da doença. Procure um especialista!")

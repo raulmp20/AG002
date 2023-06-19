@@ -162,27 +162,50 @@ class Banco(object):
 
     # Inserir dados na tabela breast-cancer
     def inserirDados(self):
+        listaReferencias = []
         print("Insira os dados para teste de recorrência de acordo com as instruções a seguir: ")
-        print("Qual a idade do paciente? ")
-        idade = input("Digite a idade: ")
-        menopausa = input("Digite a menopausa: ")
-        tamanho_tumor = input("Digite o tamanho do tumor: ")
-        inv_nodes = input("Digite o número de nós invadidos: ")
-        node_caps = input(
-            "Digite se há envolvimento das cápsulas linfáticas (1 - Sim, 0 - Não): ")
-        deg_maligno = input("Digite o grau de malignidade: ")
-        mama = input("Digite a mama: ")
-        mama_quad = input("Digite o quadrante da mama: ")
-        irradiacao = input("Digite se houve irradiação (1 - Sim, 0 - Não): ")
-        classe = input("Digite a classe: ")
 
-        testing = np.array([idade, menopausa, tamanho_tumor, inv_nodes, node_caps, deg_maligno,
-                            mama, mama_quad, irradiacao, classe]).reshape(1, -1)
-        tree_predict = Inteligencia(testing)
-        print(tree_predict)
+        print("Qual a idade do paciente? ")
+        idade = int(input("Digite a idade: "))
+        listaReferencias.append(idade)
+
+        menopausa = int(input("Digite a menopausa: "))
+        listaReferencias.append(menopausa)
+
+        tamanho_tumor = int(input("Digite o tamanho do tumor: "))
+        listaReferencias.append(tamanho_tumor)
+
+        inv_nodes = int(input("Digite o número de nós invadidos: "))
+        listaReferencias.append(inv_nodes)
+
+        node_caps = int(input(
+            "Digite se há envolvimento das cápsulas linfáticas (1 - Sim, 0 - Não): "))
+        listaReferencias.append(node_caps)
+
+        deg_maligno = int(input("Digite o grau de malignidade: "))
+        listaReferencias.append(deg_maligno)
+
+        mama = int(input("Digite a mama: "))
+        listaReferencias.append(mama)
+
+        mama_quad = int(input("Digite o quadrante da mama: "))
+        listaReferencias.append(mama_quad)
+
+        irradiacao = int(input("Digite se houve irradiação (1 - Sim, 0 - Não): "))
+        listaReferencias.append(irradiacao)
+
+        classe = int(input("Digite a classe (1 ou 2): "))
+        listaReferencias.append(classe)
 
         with self.bancoConexao.cursor() as cursor:
             cursor.execute("INSERT INTO `breast-cancer` (`age`, `menopause`, `tumor-size`, `inv-nodes`, `node-caps`, `deg-malig`, `breast`, `breast-quad`, `irradiat`, `class`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
                            (idade, menopausa, tamanho_tumor, inv_nodes, node_caps, deg_maligno, mama, mama_quad, irradiacao, classe))
         self.bancoConexao.commit()
+
+        df = pd.DataFrame([listaReferencias],
+                          columns=['age', 'menopause', 'tumor-size', 'inv-nodes', 'node-caps', 'deg-malig', 'breast', 'breast-quad',
+                                   'irradiat', 'class'])
+
+        return df
+
 
